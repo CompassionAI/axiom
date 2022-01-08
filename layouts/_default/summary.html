@@ -10,10 +10,39 @@
   </div>
   {{- end }}
   <div class="summary-content font-content-sans">
-    <a class="summary-title block font-semibold leading-tighter tracking-snug text-2xl text-raven-800 hover:text-raven-900" href="{{ .RelPermalink }}">{{ .Title }}</a>
+    <div class="">
+      <a class="summary-title block font-semibold leading-tighter tracking-snug text-2xl text-raven-800 hover:text-raven-900" href="{{ .RelPermalink }}">
+        {{- if .Params.thumbnail }}
+        {{- $imgSrc := partial "cdn-src" (dict "Site" $.Site "Page" . "src" .Params.thumbnail "preset" "summary") }}
+        <img
+          class="inline mx-auto object-cover"
+          src="{{ $imgSrc }}"
+          alt="{{ .Title }}">
+        {{- end }}
+        {{- if .Params.toctitle }}
+        {{ .Params.toctitle }}
+        {{- else }}
+        {{ .Title }}
+        {{- end }}
+      </a>
+    </div>
     <a class="summary-excerpt mt-2 block font-normal leading-tight tracking-normal text-base text-raven-500 hover:text-raven-600" href="{{ .RelPermalink }}">
-      {{- partial "meta-subtitle" . | safeHTML | truncate 175 "..." -}}
+      <span class="">
+        {{- partial "meta-subtitle" . | safeHTML | truncate 175 "..." -}}
+      </span>
+      {{- if .Site.Params.addReadMore }}
+      <span class="underline whitespace-nowrap">
+        Read more...
+      </span>
+      {{- end }}
+      {{- if .Params.subsubtitle }}
+      <p class="mt-2 block italic">
+        {{- chomp (.Params.subsubtitle | safeHTML | markdownify) }}
+      </p>
+      {{- end }}
     </a>
+    {{- if .Date }}
     <aside class="summary-meta mt-6 font-normal leading-snug tracking-normal text-sm text-raven-500"><time datetime="{{ dateFormat "2006-01-02T15:04:05Z" .Date.UTC | safeHTML }}">{{ dateFormat $dateFormat .Date.Local }}</time></aside>
+    {{- end }}
   </div>
 </div>
