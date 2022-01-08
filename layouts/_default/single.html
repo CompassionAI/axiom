@@ -32,6 +32,11 @@
       {{- partial "toc" . }}
       {{- .Content }}
       </article>
+      {{- if .Site.Params.backButton }}
+      <div class="text-center mt-5 text-2xl">
+        <button onclick="history.back()"><span class="underline">&lsaquo; Back</span></button>
+      </div>
+      {{- end }}
       {{ partial "google-adsense-ad-slot" . }}
       {{ partial "disqus" . }}
     </div>
